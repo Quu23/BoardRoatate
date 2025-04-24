@@ -2,10 +2,22 @@ package window;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import app.Application;
 
 public class Menu extends JPanel{
 
@@ -38,5 +50,62 @@ public class Menu extends JPanel{
         this.add(lineCounter);
 
         //todo:以下でボタンのactionを設定する.
+        this.buttons[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // ひとつ前に戻る
+
+            }
+        });
+
+        this.buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File old = new File("board.txt");
+                old.delete();
+                File newData = new File("board.txt");
+
+                try{
+                    newData.createNewFile();
+                }catch(IOException exception){
+                    exception.printStackTrace();
+                }
+                try (Writer saveWriter = new BufferedWriter(new FileWriter(newData));) {
+                    //save処理
+
+                    saveWriter.flush();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+        this.buttons[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try (Scanner sc = new Scanner(new File("board.txt"))) {
+                    //load処理
+                    
+                    sc.useDelimiter(",");
+
+                    while(sc.hasNextLine()){
+                        //次の行を読み込み
+
+                        sc.nextLine();
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+        this.lineCounter.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Application.radius = lineCounter.getValue();
+            }
+        });
+
+
     }
 }

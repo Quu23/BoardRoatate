@@ -1,14 +1,13 @@
 package window;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 
 public class Window extends JFrame{
 
-    Board board;
-    Menu menu;
+    public Board board;
+    private Menu menu;
 
     public Window(){
         this.setSize(500, 600);
