@@ -70,6 +70,7 @@ public class Board extends JPanel{
         g.drawString("手数:"+Application.count,440,10);
         g.drawString(Application.mousePoint.x+":"+Application.mousePoint.y,440,20);
         g.drawString("r:"+Application.radius, 440, 30);
+        g.drawString(Application.rangeIndex[0]+"/"+Application.rangeIndex[1]+"//"+Application.rangeIndex[2]+"/"+Application.rangeIndex[3], 440,40);
 
         Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(THIN);
@@ -89,8 +90,8 @@ public class Board extends JPanel{
         g.setColor(Color.RED);
         g2 = (Graphics2D)g;
 		g2.setStroke(THICK);
-        int width  = Application.rangeIndex[3] - Application.rangeIndex[1];
-        int height = Application.rangeIndex[2] - Application.rangeIndex[0];
+        int width  = Application.rangeIndex[3] - Application.rangeIndex[1] + 1;
+        int height = Application.rangeIndex[2] - Application.rangeIndex[0] + 1;
         g.drawRect(Application.rangeIndex[1] * 100, Application.rangeIndex[0] * 100,width * 100, height * 100);
 
         g.setColor(Color.black);

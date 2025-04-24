@@ -1,9 +1,11 @@
 package app;
 
+
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -52,8 +54,8 @@ public class Application {
                 if(nowJ+radius - 1 < 4 && nowI + radius - 1 < 4){
                     rangeIndex[0] = nowI;
                     rangeIndex[1] = nowJ;
-                    rangeIndex[2] = nowI + radius;
-                    rangeIndex[3] = nowJ + radius;
+                    rangeIndex[2] = nowI + radius - 1;
+                    rangeIndex[3] = nowJ + radius - 1;
                 }
             }
         });
@@ -63,9 +65,27 @@ public class Application {
 
     public static void action(){
         count++;
+        rotateBoard();
     }
 
-    private void rotateBoard(int[][] miniBoard){
+    private static void rotateBoard(){
+        ArrayList<ArrayList<Integer>> minimap = new ArrayList<>();
+        for (int i = 0; i < radius; i++) {
+            ArrayList<Integer> mini = new ArrayList<>();
+            for (int j = 0; j < radius; j++) {
+                mini.add(board[rangeIndex[0]+i][rangeIndex[1]+j]);
+                System.out.print((rangeIndex[0]+i) + "/" + (rangeIndex[1]+j)+" ");
+            }
+            // System.out.println();
+            minimap.add(mini);
+        }
+        // System.out.println("  ");
 
+        for (int i = 0; i < radius; i++) {
+            for (int j = 0; j < radius; j++) {
+                // j' = r - i -1, i' = j
+                board[j + rangeIndex[0]][radius - i - 1 + rangeIndex[1]] = minimap.get(i).get(j);
+            }
+        }
     }
 }
