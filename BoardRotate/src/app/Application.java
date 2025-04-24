@@ -70,11 +70,11 @@ public class Application {
 
     private static void rotateBoard(){
         ArrayList<ArrayList<Integer>> minimap = new ArrayList<>();
-        for (int i = 0; i < radius; i++) {
+        for (int j = 0; j < radius; j++) {
             ArrayList<Integer> mini = new ArrayList<>();
-            for (int j = 0; j < radius; j++) {
+            for (int i = 0; i < radius; i++) {            
                 mini.add(board[rangeIndex[0]+i][rangeIndex[1]+j]);
-                System.out.print((rangeIndex[0]+i) + "/" + (rangeIndex[1]+j)+" ");
+                // System.out.print((rangeIndex[0]+i) + "/" + (rangeIndex[1]+j)+" ");
             }
             // System.out.println();
             minimap.add(mini);
@@ -84,7 +84,8 @@ public class Application {
         for (int i = 0; i < radius; i++) {
             for (int j = 0; j < radius; j++) {
                 // j' = r - i -1, i' = j
-                board[j + rangeIndex[0]][radius - i - 1 + rangeIndex[1]] = minimap.get(i).get(j);
+                board[radius - j - 1 + rangeIndex[0]][i + rangeIndex[1]] = minimap.get(i).get(j);
+                // System.out.println(minimap);
             }
         }
     }
