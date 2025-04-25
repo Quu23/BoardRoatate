@@ -20,7 +20,7 @@ public class Application {
     // 手数
     public static int count = 0;
 
-    public static int radius = 2;
+    private static int radius = 2;
 
     public static int[][] board;
 
@@ -31,12 +31,13 @@ public class Application {
     public static Stack<int[]> actions;
 
     public static void main(String[] args) {
+        actions=new Stack<>();
         {
             int[][] tmp = {
-                {6,3,1,0},
-                {2,4,7,6},
-                {7,1,3,0},
-                {5,4,5,2},
+                {0,0,1,1},
+                {2,2,3,3},
+                {4,4,5,5},
+                {6,6,7,7},
             };
 
             board = tmp;
@@ -76,28 +77,53 @@ public class Application {
         rotateBoard();
     }
 
-    private static void rotateBoard(){
+    /** 
+     * 
+     * @param leftOrRight 
+     * 0 is left, the other is right 
+     */
+    private static void rotateBoard(int leftOrRight){
         ArrayList<ArrayList<Integer>> minimap = new ArrayList<>();
         for (int i = 0; i < radius; i++) {   
             ArrayList<Integer> mini = new ArrayList<>();
             for (int j = 0; j < radius; j++) {            
                 mini.add(board[rangeIndex[0]+i][rangeIndex[1]+j]);
-                // System.out.print((rangeIndex[0]+i) + "/" + (rangeIndex[1]+j)+" ");
-                // System.out.print(board[rangeIndex[0]+i][rangeIndex[1]+j]+" //");
             }
-            // System.out.println();
             minimap.add(mini);
         }
-        // System.out.println("  ");
-
-        // System.out.println(minimap);
 
         for (int i = 0; i < radius; i++) {
             for (int j = 0; j < radius; j++) {
-                // j' = r - i -1, i' = j
-                board[j + rangeIndex[0]][radius - i - 1 + rangeIndex[1]] = minimap.get(i).get(j);
-                // System.out.println(minimap);
+                if(leftOrRight!=0){// 右回転
+                    board[j + rangeIndex[0]][radius - i - 1 + rangeIndex[1]] = minimap.get(i).get(j);
+                }else{//左回転
+                    board[radius - j - 1 + rangeIndex[0]][i + rangeIndex[1]] = minimap.get(i).get(j);
+                }
             }
         }
+    }
+
+    /** right rotation */
+    private static void rotateBoard(){
+        rotateBoard(1);
+    }
+
+    public static void Undo(){
+        if(count==0)return;
+        
+        count--;
+        int[] action = actions.pop();
+        rangeIndex[0] = action[0];
+        rangeIndex[1] = action[1];
+        setRadius(action[2]);
+        rotateBoard(0);
+    }
+
+    public static int getRadius(){
+        return radius;
+    }
+
+    public static void setRadius(int setRadius){
+        if(rangeIndex[0]+setRadius < 5 && rangeIndex[1]+setRadius < 5)radius=setRadius;
     }
 }

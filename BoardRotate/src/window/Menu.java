@@ -14,9 +14,6 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import app.Application;
 
 public class Menu extends JPanel{
@@ -25,7 +22,6 @@ public class Menu extends JPanel{
      * 0: BACK / 1: SAVE / 2: LOAD
      */
     private JButton[] buttons;
-    private JSlider lineCounter;
 
     public Menu(){
         this.setLayout(new FlowLayout());
@@ -39,73 +35,61 @@ public class Menu extends JPanel{
 
             this.buttons=tmpButtons;
         }
-        this.lineCounter = new JSlider(2, 4, 2);
-        this.lineCounter.setLabelTable(lineCounter.createStandardLabels(1));
-        this.lineCounter.setPaintLabels(true);
 
         for (JButton jButton : buttons) {
             jButton.setBackground(Color.WHITE);
             this.add(jButton);
         }
-        this.add(lineCounter);
 
         //todo:以下でボタンのactionを設定する.
         this.buttons[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // ひとつ前に戻る
-
+                Application.Undo();
             }
         });
 
         this.buttons[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File old = new File("board.txt");
-                old.delete();
-                File newData = new File("board.txt");
+                // File old = new File("board.txt");
+                // old.delete();
+                // File newData = new File("board.txt");
 
-                try{
-                    newData.createNewFile();
-                }catch(IOException exception){
-                    exception.printStackTrace();
-                }
-                try (Writer saveWriter = new BufferedWriter(new FileWriter(newData));) {
-                    //save処理
+                // try{
+                //     newData.createNewFile();
+                // }catch(IOException exception){
+                //     exception.printStackTrace();
+                // }
+                // try (Writer saveWriter = new BufferedWriter(new FileWriter(newData));) {
+                //     //save処理
 
-                    saveWriter.flush();
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
+                //     saveWriter.flush();
+                // } catch (Exception exception) {
+                //     exception.printStackTrace();
+                // }
             }
         });
 
         this.buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try (Scanner sc = new Scanner(new File("board.txt"))) {
-                    //load処理
+                // try (Scanner sc = new Scanner(new File("board.txt"))) {
+                //     //load処理
                     
-                    sc.useDelimiter(",");
+                //     sc.useDelimiter(",");
 
-                    while(sc.hasNextLine()){
-                        //次の行を読み込み
+                //     while(sc.hasNextLine()){
+                //         //次の行を読み込み
 
-                        sc.nextLine();
-                    }
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
+                //         sc.nextLine();
+                //     }
+                // } catch (Exception exception) {
+                //     exception.printStackTrace();
+                // }
             }
         });
-
-        this.lineCounter.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                Application.radius = lineCounter.getValue();
-            }
-        });
-
 
     }
 }

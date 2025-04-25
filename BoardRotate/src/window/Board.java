@@ -29,9 +29,8 @@ public class Board extends JPanel{
                 switch(e.getButton()){
                     //左クリック
                     case MouseEvent.BUTTON1:
-                        Application.radius--;
-                        Application.radius %= 3;
-                        Application.radius+=2;
+                        int tmpRadius = (Application.getRadius()-1) % 3 + 2;
+                        Application.setRadius(tmpRadius);
                         break;
                     case MouseEvent.BUTTON2:
                         
@@ -71,7 +70,7 @@ public class Board extends JPanel{
         g.setFont(new Font("メイリオ", Font.PLAIN, 10));
         g.drawString("手数:"+Application.count,440,10);
         g.drawString(Application.mousePoint.x+":"+Application.mousePoint.y,440,20);
-        g.drawString("r:"+Application.radius, 440, 30);
+        g.drawString("r:"+Application.getRadius(), 440, 30);
         g.drawString(Application.rangeIndex[0]+"/"+Application.rangeIndex[1]+"//"+Application.rangeIndex[2]+"/"+Application.rangeIndex[3], 440,40);
 
         Graphics2D g2 = (Graphics2D)g;
