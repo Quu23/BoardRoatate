@@ -31,6 +31,7 @@ public class Application {
     public static Stack<int[]> actions;
 
     public static void main(String[] args) {
+        System.out.println("起動しました");
         actions=new Stack<>();
         {
             int[][] tmp = {
