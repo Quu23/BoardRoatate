@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import app.Application;
 
 public class Menu extends JPanel{
@@ -53,41 +52,50 @@ public class Menu extends JPanel{
         this.buttons[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // File old = new File("board.txt");
-                // old.delete();
-                // File newData = new File("board.txt");
+                File old = new File("data/board.txt");
+                old.delete();
+                File newData = new File("data/board.txt");
 
-                // try{
-                //     newData.createNewFile();
-                // }catch(IOException exception){
-                //     exception.printStackTrace();
-                // }
-                // try (Writer saveWriter = new BufferedWriter(new FileWriter(newData));) {
-                //     //save処理
-
-                //     saveWriter.flush();
-                // } catch (Exception exception) {
-                //     exception.printStackTrace();
-                // }
+                try{
+                    newData.createNewFile();
+                }catch(IOException exception){
+                    exception.printStackTrace();
+                }
+                try (Writer saveWriter = new BufferedWriter(new FileWriter(newData));) {
+                    //save処理
+                    for (int i = 0; i < Application.board.length; i++) {
+                        for (int j = 0; j < Application.board[0].length; j++) {
+                            saveWriter.write(Application.board[i][j]+",");
+                        }
+                        saveWriter.write('\n');
+                    }
+                    saveWriter.flush();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
 
         this.buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // try (Scanner sc = new Scanner(new File("board.txt"))) {
-                //     //load処理
+                try (Scanner sc = new Scanner(new File("data/board.txt"))) {
+                    //load処理
                     
-                //     sc.useDelimiter(",");
+                    sc.useDelimiter(",");
 
-                //     while(sc.hasNextLine()){
-                //         //次の行を読み込み
-
-                //         sc.nextLine();
-                //     }
-                // } catch (Exception exception) {
-                //     exception.printStackTrace();
-                // }
+                    int i=0;
+                    while(sc.hasNextLine()){
+                        //次の行を読み込み
+                        for(int j=0;j<4;j++){
+                            Application.board[i][j]=sc.nextInt();
+                        }
+                        i++;
+                        sc.nextLine();
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
 
