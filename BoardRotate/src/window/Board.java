@@ -29,7 +29,9 @@ public class Board extends JPanel{
                 switch(e.getButton()){
                     //左クリック
                     case MouseEvent.BUTTON1:
-                        
+                        Application.radius--;
+                        Application.radius %= 3;
+                        Application.radius+=2;
                         break;
                     case MouseEvent.BUTTON2:
                         
@@ -83,7 +85,7 @@ public class Board extends JPanel{
         for (int i = 0; i < Application.board.length; i++) {
             for (int j = 0; j < Application.board[0].length; j++){
                 g.setColor(getCellColor(Application.board[i][j]));
-                g.drawString(""+Application.board[i][j], 50 + 100 * i,50 + 100 * j);
+                g.drawString(""+Application.board[i][j], 50 + 100 * j,50 + 100 * i);
             }
         }
 

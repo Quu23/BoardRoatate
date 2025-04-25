@@ -29,10 +29,10 @@ public class Application {
     public static void main(String[] args) {
         {
             int[][] tmp = {
-                {0,0,1,1},
-                {2,2,3,3},
-                {4,4,5,5},
-                {6,6,7,7},
+                {6,3,1,0},
+                {2,4,7,6},
+                {7,1,3,0},
+                {5,4,5,2},
             };
 
             board = tmp;
@@ -70,21 +70,24 @@ public class Application {
 
     private static void rotateBoard(){
         ArrayList<ArrayList<Integer>> minimap = new ArrayList<>();
-        for (int j = 0; j < radius; j++) {
+        for (int i = 0; i < radius; i++) {   
             ArrayList<Integer> mini = new ArrayList<>();
-            for (int i = 0; i < radius; i++) {            
+            for (int j = 0; j < radius; j++) {            
                 mini.add(board[rangeIndex[0]+i][rangeIndex[1]+j]);
                 // System.out.print((rangeIndex[0]+i) + "/" + (rangeIndex[1]+j)+" ");
+                // System.out.print(board[rangeIndex[0]+i][rangeIndex[1]+j]+" //");
             }
             // System.out.println();
             minimap.add(mini);
         }
         // System.out.println("  ");
 
+        // System.out.println(minimap);
+
         for (int i = 0; i < radius; i++) {
             for (int j = 0; j < radius; j++) {
                 // j' = r - i -1, i' = j
-                board[radius - j - 1 + rangeIndex[0]][i + rangeIndex[1]] = minimap.get(i).get(j);
+                board[j + rangeIndex[0]][radius - i - 1 + rangeIndex[1]] = minimap.get(i).get(j);
                 // System.out.println(minimap);
             }
         }
