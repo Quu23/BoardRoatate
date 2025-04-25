@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -25,6 +27,9 @@ public class Application {
 
     /** startI, startJ, endI, end J */
     public static int[] rangeIndex = {0,0,2,2};
+
+    /** [startI,startJ,Radius] */
+    public static Stack<int[]> actions;
 
     public static void main(String[] args) {
         {
@@ -65,6 +70,10 @@ public class Application {
 
     public static void action(){
         count++;
+        {
+            int[] tmp = {rangeIndex[0],rangeIndex[1],radius};
+            actions.push(tmp);
+        }
         rotateBoard();
     }
 
