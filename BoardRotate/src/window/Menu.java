@@ -79,6 +79,7 @@ public class Menu extends JPanel{
         this.buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Application.count=0;
                 try (Scanner sc = new Scanner(new File("data/board.txt"))) {
                     //load処理
                     
