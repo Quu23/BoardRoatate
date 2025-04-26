@@ -127,4 +127,13 @@ public class Application {
     public static void setRadius(int setRadius){
         if(rangeIndex[0]+setRadius < 5 && rangeIndex[1]+setRadius < 5)radius=setRadius;
     }
+
+    public static void setNextRadius(){
+        int tmpRadius = (radius-1) % 3 + 2;
+        if(rangeIndex[0]+tmpRadius < 5 && rangeIndex[1]+tmpRadius < 5){
+            radius=tmpRadius;
+        }else{
+            radius=2;
+        }
+    }
 }

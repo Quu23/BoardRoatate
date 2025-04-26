@@ -29,8 +29,7 @@ public class Board extends JPanel{
                 switch(e.getButton()){
                     //左クリック
                     case MouseEvent.BUTTON1:
-                        int tmpRadius = (Application.getRadius()-1) % 3 + 2;
-                        Application.setRadius(tmpRadius);
+                        Application.setNextRadius();
                         break;
                     case MouseEvent.BUTTON2:
                         
