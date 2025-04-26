@@ -98,7 +98,7 @@ public class Board extends JPanel{
         g.fillOval(Application.mousePoint.x-5, Application.mousePoint.y-5, 10, 10);
     }
 
-    private Color getCellColor(int cell){
+    public static Color getCellColor(int cell){
         switch (cell) {
             case 0:
                 return Color.RED;

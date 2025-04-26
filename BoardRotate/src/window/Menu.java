@@ -40,11 +40,9 @@ public class Menu extends JPanel{
             this.add(jButton);
         }
 
-        //todo:以下でボタンのactionを設定する.
         this.buttons[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // ひとつ前に戻る
                 Application.Undo();
             }
         });
@@ -80,6 +78,7 @@ public class Menu extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Application.count=0;
+                Application.historyBoard.clear();
                 try (Scanner sc = new Scanner(new File("data/board.txt"))) {
                     //load処理
                     
@@ -97,6 +96,7 @@ public class Menu extends JPanel{
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
+                Application.historyBoard.add(Application.copyArray(Application.board));
             }
         });
 

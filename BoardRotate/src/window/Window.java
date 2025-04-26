@@ -1,6 +1,7 @@
 package window;
 
 import javax.swing.JFrame;
+import javax.swing.JWindow;
 
 import app.Application;
 
@@ -17,6 +18,7 @@ public class Window extends JFrame{
 
     public Board board;
     private Menu menu;
+    public HistoryWindow historyWindow;
 
     public Window(){
         this.setSize(500, 600);
@@ -55,6 +57,7 @@ public class Window extends JFrame{
 
         board = new Board();
         menu = new Menu();
+        historyWindow = new HistoryWindow(this);
 
         this.add(board,BorderLayout.CENTER);
         this.add(menu,BorderLayout.SOUTH);

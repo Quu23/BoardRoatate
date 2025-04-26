@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 
 import javax.swing.SwingUtilities;
@@ -30,6 +31,8 @@ public class Application {
     /** [startI,startJ,Radius] */
     public static Stack<int[]> actions;
 
+    public static ArrayList<int[][]> historyBoard;
+
     public static void main(String[] args) {
         System.out.println("起動しました");
         actions=new Stack<>();
@@ -43,12 +46,15 @@ public class Application {
 
             board = tmp;
         }
+        historyBoard = new ArrayList<>();
+        historyBoard.add(board);
         Window window = new Window();
 
         Timer timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 window.board.repaint();
+                window.historyWindow.repaint();
                 if(Board.isMousePointerExited){
                     mousePoint = MouseInfo.getPointerInfo().getLocation();
                     SwingUtilities.convertPointFromScreen(mousePoint, window.board);
@@ -76,6 +82,7 @@ public class Application {
             actions.push(tmp);
         }
         rotateBoard();
+        historyBoard.add(copyArray(board));
     }
 
     /** 
@@ -118,6 +125,7 @@ public class Application {
         rangeIndex[1] = action[1];
         setRadius(action[2]);
         rotateBoard(0);
+        historyBoard.remove(historyBoard.size()-1);
     }
 
     public static int getRadius(){
@@ -135,5 +143,16 @@ public class Application {
         }else{
             radius=2;
         }
+    }
+
+    public static int[][] copyArray(int[][] array){
+        if(array == null) return null;
+
+        int[][] copy = new int[array.length][];
+        for (int i = 0; i < array.length; i++) {
+            copy[i] = Arrays.copyOf(array[i], array[i].length);
+        }
+ 
+        return copy;
     }
 }
