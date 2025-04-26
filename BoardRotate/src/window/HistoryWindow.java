@@ -41,7 +41,7 @@ public class HistoryWindow extends JWindow{
                         }
                     }
 
-                    g.setColor(Color.BLACK);
+                    g.setColor(Color.cyan);
                     g.drawRect(CELL_SIZE*4*shiftJ, CELL_SIZE*4*shiftI, CELL_SIZE*4, CELL_SIZE*4); // 4ますだから掛けてる.
                 }
             }

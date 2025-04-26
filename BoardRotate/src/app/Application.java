@@ -47,7 +47,7 @@ public class Application {
             board = tmp;
         }
         historyBoard = new ArrayList<>();
-        historyBoard.add(board);
+        historyBoard.add(copyArray(board));
         Window window = new Window();
 
         Timer timer = new Timer(10, new ActionListener() {
