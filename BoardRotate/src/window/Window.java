@@ -1,8 +1,6 @@
 package window;
 
 import javax.swing.JFrame;
-import javax.swing.JWindow;
-
 import app.Application;
 
 import java.awt.BorderLayout;
