@@ -108,19 +108,15 @@ public class Board extends JPanel{
         float ratio = (float)(cell - 0) / (BOARD_SIZE * BOARD_SIZE / 2);
         ratio = Math.max(0, Math.min(1, ratio)); // 0〜1 に制限
 
-        // ratio を 0〜1 の範囲で 3つのセグメントに分けて色を変える
-        if (ratio < 0.33f) {
-            // 青→緑
-            float localRatio = ratio / 0.33f;
-            return interpolateColor(Color.BLUE, Color.GREEN, localRatio);
-        } else if (ratio < 0.66f) {
-            // 緑→黄
-            float localRatio = (ratio - 0.33f) / 0.33f;
-            return interpolateColor(Color.GREEN, Color.YELLOW, localRatio);
+ // ratio に応じて 4分割して色を補間
+        if (ratio < 0.25f) {
+            return interpolateColor(new Color(0, 0, 139), new Color(0, 191, 255), ratio / 0.25f); // DarkBlue → DeepSkyBlue
+        } else if (ratio < 0.5f) {
+            return interpolateColor(new Color(0, 191, 255), new Color(0, 100, 0), (ratio - 0.25f) / 0.25f); // DeepSkyBlue → DarkGreen
+        } else if (ratio < 0.75f) {
+            return interpolateColor(new Color(0, 100, 0), new Color(128, 0, 128), (ratio - 0.5f) / 0.25f); // DarkGreen → Purple
         } else {
-            // 黄→赤
-            float localRatio = (ratio - 0.66f) / 0.34f;
-            return interpolateColor(Color.YELLOW, Color.RED, localRatio);
+            return interpolateColor(new Color(128, 0, 128), new Color(139, 0, 0), (ratio - 0.75f) / 0.25f); // Purple → DarkRed
         }
     }
 
