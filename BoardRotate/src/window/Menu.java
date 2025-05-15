@@ -14,6 +14,7 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import app.Application;
+import util.MakeBoard;
 
 public class Menu extends JPanel{
 
@@ -30,6 +31,7 @@ public class Menu extends JPanel{
                 new JButton("BACK"),
                 new JButton("SAVE"),
                 new JButton("LOAD"),
+                new JButton("RAND"),
             };
 
             this.buttons=tmpButtons;
@@ -97,6 +99,13 @@ public class Menu extends JPanel{
                     exception.printStackTrace();
                 }
                 Application.historyBoard.add(Application.copyArray(Application.board));
+            }
+        });
+
+        this.buttons[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MakeBoard.makeRandom(Application.board);
             }
         });
 

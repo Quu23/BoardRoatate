@@ -132,7 +132,7 @@ public class Application {
 
     public static void setNextRadius(){
         int tmpRadius = (radius-1) % (Board.BOARD_SIZE-1) + 2;
-        if(rangeIndex[0]+tmpRadius < Board.BOARD_SIZE && rangeIndex[1]+tmpRadius < Board.BOARD_SIZE){
+        if(rangeIndex[0]+tmpRadius-1 < Board.BOARD_SIZE && rangeIndex[1]+tmpRadius-1 < Board.BOARD_SIZE){
             radius=tmpRadius;
         }else{
             radius=2;

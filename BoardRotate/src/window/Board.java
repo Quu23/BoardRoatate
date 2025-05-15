@@ -14,16 +14,19 @@ import app.Application;
 
 public class Board extends JPanel{
 
-    public static final int BOARD_SIZE = 12;
+    public static final int BOARD_SIZE =10;
 
     public static boolean isMousePointerExited;
     private final BasicStroke THIN;
     private final BasicStroke THICK;
 
+    private final int CELL_SIZE;
+
     public Board(){
         isMousePointerExited=true;
         THIN = new BasicStroke(1);
         THICK = new BasicStroke(5);
+        CELL_SIZE = 400 / BOARD_SIZE;
 
         this.addMouseListener(new MouseListener() {
             @Override
@@ -77,15 +80,15 @@ public class Board extends JPanel{
         Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(THIN);
         for(int i=0; i < BOARD_SIZE+1; i++){
-            g.drawLine(0, 400 / BOARD_SIZE * i, 400, 400 / BOARD_SIZE * i);
-            g.drawLine(400 / BOARD_SIZE * i, 0, 400 / BOARD_SIZE * i , 400);
+            g.drawLine(0, CELL_SIZE * i, 400, CELL_SIZE * i);
+            g.drawLine(CELL_SIZE * i, 0, CELL_SIZE * i , 400);
         }
 
         g.setFont(new Font("メイリオ", Font.BOLD, 20));
         for (int i = 0; i < Application.board.length; i++) {
             for (int j = 0; j < Application.board[0].length; j++){
                 g.setColor(getCellColor(Application.board[i][j]));
-                g.drawString(""+Application.board[i][j], 200 / BOARD_SIZE + 400 / BOARD_SIZE * j, 200 / BOARD_SIZE + 400 / BOARD_SIZE * i);
+                g.drawString(""+Application.board[i][j], CELL_SIZE / 3 + CELL_SIZE * j, CELL_SIZE / 2 + CELL_SIZE * i);
             }
         }
 
@@ -94,7 +97,7 @@ public class Board extends JPanel{
 		g2.setStroke(THICK);
         int width  = Application.rangeIndex[3] - Application.rangeIndex[1] + 1;
         int height = Application.rangeIndex[2] - Application.rangeIndex[0] + 1;
-        g.drawRect(Application.rangeIndex[1] * 400 / BOARD_SIZE, Application.rangeIndex[0] * 400 / BOARD_SIZE, width * 400 / BOARD_SIZE, height * 400 / BOARD_SIZE);
+        g.drawRect(Application.rangeIndex[1] * CELL_SIZE, Application.rangeIndex[0] * CELL_SIZE, width * CELL_SIZE, height * CELL_SIZE);
 
         g.setColor(Color.black);
         g.fillOval(Application.mousePoint.x-5, Application.mousePoint.y-5, 10, 10);
