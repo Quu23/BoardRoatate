@@ -14,12 +14,14 @@ import app.Application;
 
 public class Board extends JPanel{
 
+    public static final int BOARD_SIZE = 12;
+
     public static boolean isMousePointerExited;
     private final BasicStroke THIN;
     private final BasicStroke THICK;
 
     public Board(){
-        isMousePointerExited=false;
+        isMousePointerExited=true;
         THIN = new BasicStroke(1);
         THICK = new BasicStroke(5);
 
@@ -44,11 +46,11 @@ public class Board extends JPanel{
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-                isMousePointerExited = true;
+                isMousePointerExited = false;
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                isMousePointerExited = false;
+                isMousePointerExited = true;
             }
             @Override
             public void mousePressed(MouseEvent e) {
@@ -74,16 +76,16 @@ public class Board extends JPanel{
 
         Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(THIN);
-        for(int i=0; i < 5; i++){
-            g.drawLine(0, 100 * i, 400, 100 * i);
-            g.drawLine(100 * i, 0, 100 * i , 400);
+        for(int i=0; i < BOARD_SIZE+1; i++){
+            g.drawLine(0, 400 / BOARD_SIZE * i, 400, 400 / BOARD_SIZE * i);
+            g.drawLine(400 / BOARD_SIZE * i, 0, 400 / BOARD_SIZE * i , 400);
         }
 
         g.setFont(new Font("メイリオ", Font.BOLD, 20));
         for (int i = 0; i < Application.board.length; i++) {
             for (int j = 0; j < Application.board[0].length; j++){
                 g.setColor(getCellColor(Application.board[i][j]));
-                g.drawString(""+Application.board[i][j], 50 + 100 * j,50 + 100 * i);
+                g.drawString(""+Application.board[i][j], 200 / BOARD_SIZE + 400 / BOARD_SIZE * j, 200 / BOARD_SIZE + 400 / BOARD_SIZE * i);
             }
         }
 
@@ -92,32 +94,38 @@ public class Board extends JPanel{
 		g2.setStroke(THICK);
         int width  = Application.rangeIndex[3] - Application.rangeIndex[1] + 1;
         int height = Application.rangeIndex[2] - Application.rangeIndex[0] + 1;
-        g.drawRect(Application.rangeIndex[1] * 100, Application.rangeIndex[0] * 100,width * 100, height * 100);
+        g.drawRect(Application.rangeIndex[1] * 400 / BOARD_SIZE, Application.rangeIndex[0] * 400 / BOARD_SIZE, width * 400 / BOARD_SIZE, height * 400 / BOARD_SIZE);
 
         g.setColor(Color.black);
         g.fillOval(Application.mousePoint.x-5, Application.mousePoint.y-5, 10, 10);
     }
 
     public static Color getCellColor(int cell){
-        switch (cell) {
-            case 0:
-                return Color.RED;
-            case 1:
-                return Color.BLUE;
-            case 2:
-                return Color.BLACK;
-            case 3:
-                return Color.MAGENTA;
-            case 4:
-                return Color.GREEN;
-            case 5:
-                return Color.ORANGE;
-            case 6:
-                return Color.PINK;
-            case 7:
-                return Color.GRAY;
-            default:
-                return Color.WHITE;
+        // 範囲の正規化
+        float ratio = (float)(cell - 0) / (BOARD_SIZE * BOARD_SIZE / 2);
+        ratio = Math.max(0, Math.min(1, ratio)); // 0〜1 に制限
+
+        // ratio を 0〜1 の範囲で 3つのセグメントに分けて色を変える
+        if (ratio < 0.33f) {
+            // 青→緑
+            float localRatio = ratio / 0.33f;
+            return interpolateColor(Color.BLUE, Color.GREEN, localRatio);
+        } else if (ratio < 0.66f) {
+            // 緑→黄
+            float localRatio = (ratio - 0.33f) / 0.33f;
+            return interpolateColor(Color.GREEN, Color.YELLOW, localRatio);
+        } else {
+            // 黄→赤
+            float localRatio = (ratio - 0.66f) / 0.34f;
+            return interpolateColor(Color.YELLOW, Color.RED, localRatio);
         }
+    }
+
+        // 2色の間を補間
+    private static Color interpolateColor(Color c1, Color c2, float ratio) {
+        int red   = (int)(c1.getRed()   * (1 - ratio) + c2.getRed()   * ratio);
+        int green = (int)(c1.getGreen() * (1 - ratio) + c2.getGreen() * ratio);
+        int blue  = (int)(c1.getBlue()  * (1 - ratio) + c2.getBlue()  * ratio);
+        return new Color(red, green, blue);
     }
 }

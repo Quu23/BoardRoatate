@@ -12,6 +12,7 @@ import java.util.Stack;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import util.MakeBoard;
 import window.*;
 
 public class Application {
@@ -37,14 +38,8 @@ public class Application {
         System.out.println("起動しました");
         actions=new Stack<>();
         {
-            int[][] tmp = {
-                {0,0,1,1},
-                {2,2,3,3},
-                {4,4,5,5},
-                {6,6,7,7},
-            };
-
-            board = tmp;
+            board = new int[Board.BOARD_SIZE][Board.BOARD_SIZE];
+            MakeBoard.makeRandom(board);
         }
         historyBoard = new ArrayList<>();
         historyBoard.add(copyArray(board));
@@ -53,17 +48,16 @@ public class Application {
         Timer timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                window.board.repaint();
-                window.historyWindow.repaint();
-                if(Board.isMousePointerExited){
+                window.paint();
+                if(!Board.isMousePointerExited){
                     mousePoint = MouseInfo.getPointerInfo().getLocation();
                     SwingUtilities.convertPointFromScreen(mousePoint, window.board);
                 }
 
-                int nowJ = (int)(mousePoint.x / 100);
-                int nowI = (int)(mousePoint.y / 100);
+                int nowJ = (int)(mousePoint.x / (400 / Board.BOARD_SIZE));
+                int nowI = (int)(mousePoint.y / (400 / Board.BOARD_SIZE));
 
-                if(nowJ+radius - 1 < 4 && nowI + radius - 1 < 4){
+                if(nowJ+radius - 1 < Board.BOARD_SIZE && nowI + radius - 1 < Board.BOARD_SIZE){
                     rangeIndex[0] = nowI;
                     rangeIndex[1] = nowJ;
                     rangeIndex[2] = nowI + radius - 1;
@@ -133,12 +127,12 @@ public class Application {
     }
 
     public static void setRadius(int setRadius){
-        if(rangeIndex[0]+setRadius < 5 && rangeIndex[1]+setRadius < 5)radius=setRadius;
+        if(rangeIndex[0]+setRadius < Board.BOARD_SIZE+1 && rangeIndex[1]+setRadius < Board.BOARD_SIZE+1)radius=setRadius;
     }
 
     public static void setNextRadius(){
-        int tmpRadius = (radius-1) % 3 + 2;
-        if(rangeIndex[0]+tmpRadius < 5 && rangeIndex[1]+tmpRadius < 5){
+        int tmpRadius = (radius-1) % (Board.BOARD_SIZE-1) + 2;
+        if(rangeIndex[0]+tmpRadius < Board.BOARD_SIZE && rangeIndex[1]+tmpRadius < Board.BOARD_SIZE){
             radius=tmpRadius;
         }else{
             radius=2;

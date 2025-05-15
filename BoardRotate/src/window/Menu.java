@@ -87,7 +87,7 @@ public class Menu extends JPanel{
                     int i=0;
                     while(sc.hasNextLine()){
                         //次の行を読み込み
-                        for(int j=0;j<4;j++){
+                        for(int j=0;j<Board.BOARD_SIZE;j++){
                             Application.board[i][j]=sc.nextInt();
                         }
                         i++;

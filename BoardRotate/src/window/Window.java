@@ -55,12 +55,17 @@ public class Window extends JFrame{
 
         board = new Board();
         menu = new Menu();
-        historyWindow = new HistoryWindow(this);
+        // historyWindow = new HistoryWindow(this);
 
         this.add(board,BorderLayout.CENTER);
         this.add(menu,BorderLayout.SOUTH);
 
         this.setVisible(true);
+    }
+
+    public void paint(){
+        this.board.repaint();
+        // this.historyWindow.repaint();
     }
     
 }
