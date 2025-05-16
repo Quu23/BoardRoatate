@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class Window extends JFrame{
 
@@ -37,8 +39,10 @@ public class Window extends JFrame{
                     exception.printStackTrace();
                 }
                 try (Writer saveWriter = new BufferedWriter(new FileWriter(newData));) {
-                    //save処理
-                    for (int i = 0; i < Application.actions.size(); i++) {
+                    // save処理
+                    // size()はpopによって変わるから保存!
+                    int actionSize = Application.actions.size();
+                    for (int i = 0; i < actionSize; i++) {
                         int[] action = Application.actions.pop();
                         saveWriter.write(action[0]+","+action[1]+","+action[2]+",");
                         saveWriter.write('\n');
