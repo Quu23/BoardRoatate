@@ -75,7 +75,10 @@ public class Menu extends JPanel{
                     exception.printStackTrace();
                 }
                 try (Writer saveWriter = new BufferedWriter(new FileWriter(newData));) {
-                    //save処理
+                    // save処理
+                    // 必ずBoardサイズを先頭に書く.
+                    saveWriter.write(Board.getBoardSize()+",");
+                    saveWriter.write('\n');
                     for (int i = 0; i < Application.board.length; i++) {
                         for (int j = 0; j < Application.board[0].length; j++) {
                             saveWriter.write(Application.board[i][j]+",");
@@ -98,6 +101,12 @@ public class Menu extends JPanel{
                     //load処理
                     
                     sc.useDelimiter(",");
+
+                    if(sc.hasNextLine()){
+                        int boardSizeOfData = sc.nextInt();
+                        if(boardSizeOfData != Board.getBoardSize()) return;
+                        sc.nextLine();
+                    }
 
                     int i=0;
                     while(sc.hasNextLine()){
