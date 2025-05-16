@@ -11,9 +11,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Arrays;
-import java.util.Collection;
-
 public class Window extends JFrame{
 
     public Board board;

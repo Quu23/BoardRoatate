@@ -38,7 +38,7 @@ public class Application {
         System.out.println("起動しました");
         actions=new Stack<>();
         {
-            board = new int[Board.BOARD_SIZE][Board.BOARD_SIZE];
+            board = new int[Board.getBoardSize()][Board.getBoardSize()];
             MakeBoard.makeRandom(board);
         }
         historyBoard = new ArrayList<>();
@@ -54,10 +54,10 @@ public class Application {
                     SwingUtilities.convertPointFromScreen(mousePoint, window.board);
                 }
 
-                int nowJ = (int)(mousePoint.x / (400 / Board.BOARD_SIZE));
-                int nowI = (int)(mousePoint.y / (400 / Board.BOARD_SIZE));
+                int nowJ = (int)(mousePoint.x / Board.getCellSize());
+                int nowI = (int)(mousePoint.y / Board.getCellSize());
 
-                if(nowJ+radius - 1 < Board.BOARD_SIZE && nowI + radius - 1 < Board.BOARD_SIZE){
+                if(nowJ+radius - 1 < Board.getBoardSize() && nowI + radius - 1 < Board.getBoardSize()){
                     rangeIndex[0] = nowI;
                     rangeIndex[1] = nowJ;
                     rangeIndex[2] = nowI + radius - 1;
@@ -127,12 +127,12 @@ public class Application {
     }
 
     public static void setRadius(int setRadius){
-        if(rangeIndex[0]+setRadius < Board.BOARD_SIZE+1 && rangeIndex[1]+setRadius < Board.BOARD_SIZE+1)radius=setRadius;
+        if(rangeIndex[0]+setRadius < Board.getBoardSize()+1 && rangeIndex[1]+setRadius < Board.getBoardSize()+1)radius=setRadius;
     }
 
     public static void setNextRadius(){
-        int tmpRadius = (radius-1) % (Board.BOARD_SIZE-1) + 2;
-        if(rangeIndex[0]+tmpRadius-1 < Board.BOARD_SIZE && rangeIndex[1]+tmpRadius-1 < Board.BOARD_SIZE){
+        int tmpRadius = (radius-1) % (Board.getBoardSize()-1) + 2;
+        if(rangeIndex[0]+tmpRadius-1 < Board.getBoardSize() && rangeIndex[1]+tmpRadius-1 < Board.getBoardSize()){
             radius=tmpRadius;
         }else{
             radius=2;

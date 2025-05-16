@@ -9,10 +9,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JSpinner.NumberEditor;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.SpinnerNumberModel;
+
 import app.Application;
 import util.MakeBoard;
 
@@ -22,6 +29,8 @@ public class Menu extends JPanel{
      * 0: BACK / 1: SAVE / 2: LOAD
      */
     private JButton[] buttons;
+
+    private JSpinner boardSizeChanger; 
 
     public Menu(){
         this.setLayout(new FlowLayout());
@@ -37,10 +46,14 @@ public class Menu extends JPanel{
             this.buttons=tmpButtons;
         }
 
+        this.boardSizeChanger =  new JSpinner(new SpinnerNumberModel(4, 2, 24, 2));
+
         for (JButton jButton : buttons) {
             jButton.setBackground(Color.WHITE);
             this.add(jButton);
         }
+
+        this.add(boardSizeChanger);
 
         this.buttons[0].addActionListener(new ActionListener() {
             @Override
@@ -89,7 +102,7 @@ public class Menu extends JPanel{
                     int i=0;
                     while(sc.hasNextLine()){
                         //次の行を読み込み
-                        for(int j=0;j<Board.BOARD_SIZE;j++){
+                        for(int j=0;j<Board.getBoardSize();j++){
                             Application.board[i][j]=sc.nextInt();
                         }
                         i++;
@@ -106,6 +119,27 @@ public class Menu extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 MakeBoard.makeRandom(Application.board);
+            }
+        });
+
+        JSpinner.NumberEditor editor = new NumberEditor(boardSizeChanger);
+        this.boardSizeChanger.setEditor(editor);
+        editor.getTextField().setEditable(false);
+        this.add(boardSizeChanger);
+
+        this.boardSizeChanger.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Board.setBoardSize((int)boardSizeChanger.getValue());
+
+                Application.actions.clear();
+                Application.count = 0;
+                {
+                    Application.board = new int[Board.getBoardSize()][Board.getBoardSize()];
+                    MakeBoard.makeRandom(Application.board);
+                }
+                Application.historyBoard = new ArrayList<>();
+                Application.historyBoard.add(Application.copyArray(Application.board));
             }
         });
 

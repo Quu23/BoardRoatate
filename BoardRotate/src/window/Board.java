@@ -14,19 +14,22 @@ import app.Application;
 
 public class Board extends JPanel{
 
-    public static final int BOARD_SIZE =10;
+    private static int boardSize = 4;
 
     public static boolean isMousePointerExited;
     private final BasicStroke THIN;
     private final BasicStroke THICK;
 
-    private final int CELL_SIZE;
+    private static int cellSize;
+
+    static{
+        setBoardSize(4);
+    }
 
     public Board(){
         isMousePointerExited=true;
         THIN = new BasicStroke(1);
         THICK = new BasicStroke(5);
-        CELL_SIZE = 400 / BOARD_SIZE;
 
         this.addMouseListener(new MouseListener() {
             @Override
@@ -79,16 +82,16 @@ public class Board extends JPanel{
 
         Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(THIN);
-        for(int i=0; i < BOARD_SIZE+1; i++){
-            g.drawLine(0, CELL_SIZE * i, 400, CELL_SIZE * i);
-            g.drawLine(CELL_SIZE * i, 0, CELL_SIZE * i , 400);
+        for(int i=0; i < boardSize+1; i++){
+            g.drawLine(0, cellSize * i, 400, cellSize * i);
+            g.drawLine(cellSize * i, 0, cellSize * i , 400);
         }
 
-        g.setFont(new Font("メイリオ", Font.BOLD, 20));
+        g.setFont(new Font("メイリオ", Font.BOLD, Board.boardSize >= 16 ? 10 : 20));
         for (int i = 0; i < Application.board.length; i++) {
             for (int j = 0; j < Application.board[0].length; j++){
                 g.setColor(getCellColor(Application.board[i][j]));
-                g.drawString(""+Application.board[i][j], CELL_SIZE / 3 + CELL_SIZE * j, CELL_SIZE / 2 + CELL_SIZE * i);
+                g.drawString(""+Application.board[i][j], cellSize / 4 + cellSize * j, cellSize / 2 + cellSize * i);
             }
         }
 
@@ -97,7 +100,7 @@ public class Board extends JPanel{
 		g2.setStroke(THICK);
         int width  = Application.rangeIndex[3] - Application.rangeIndex[1] + 1;
         int height = Application.rangeIndex[2] - Application.rangeIndex[0] + 1;
-        g.drawRect(Application.rangeIndex[1] * CELL_SIZE, Application.rangeIndex[0] * CELL_SIZE, width * CELL_SIZE, height * CELL_SIZE);
+        g.drawRect(Application.rangeIndex[1] * cellSize, Application.rangeIndex[0] * cellSize, width * cellSize, height * cellSize);
 
         g.setColor(Color.black);
         g.fillOval(Application.mousePoint.x-5, Application.mousePoint.y-5, 10, 10);
@@ -105,10 +108,10 @@ public class Board extends JPanel{
 
     public static Color getCellColor(int cell){
         // 範囲の正規化
-        float ratio = (float)(cell - 0) / (BOARD_SIZE * BOARD_SIZE / 2);
+        float ratio = (float)(cell - 0) / (boardSize * boardSize / 2);
         ratio = Math.max(0, Math.min(1, ratio)); // 0〜1 に制限
 
- // ratio に応じて 4分割して色を補間
+        // ratio に応じて 4分割して色を補間
         if (ratio < 0.25f) {
             return interpolateColor(new Color(0, 0, 139), new Color(0, 191, 255), ratio / 0.25f); // DarkBlue → DeepSkyBlue
         } else if (ratio < 0.5f) {
@@ -126,5 +129,18 @@ public class Board extends JPanel{
         int green = (int)(c1.getGreen() * (1 - ratio) + c2.getGreen() * ratio);
         int blue  = (int)(c1.getBlue()  * (1 - ratio) + c2.getBlue()  * ratio);
         return new Color(red, green, blue);
+    }
+
+    public static int getBoardSize(){
+        return boardSize;
+    }
+
+    public static int getCellSize(){
+        return cellSize;
+    }
+
+    public static void setBoardSize(int size){
+        boardSize = size;
+        cellSize = 400 / size;
     }
 }
